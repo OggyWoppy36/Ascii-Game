@@ -1,5 +1,4 @@
 import array
-#from ascii_object import AsciiObject
 from settings import COLOR_BITS as SHIFT, BITMASK as MASK
 
 #just the grid, no font stuff

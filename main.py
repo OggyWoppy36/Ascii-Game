@@ -1,13 +1,12 @@
 import pygame
 from ascii_grid import AsciiGrid
-from settings import SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
+from settings import res_path,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
 from ship import Ship
-import random
 
 pygame.display.init()
 pygame.font.init()
 screen = pygame.display.set_mode(SCREEN_DIMS)
-font = pygame.Font("CONSOLA.TTF", FONT_SIZE)
+font = pygame.Font(res_path("CONSOLA.TTF"), FONT_SIZE)
 pygame.display.set_caption("Ascii Renderer")
 clock = pygame.time.Clock()
 

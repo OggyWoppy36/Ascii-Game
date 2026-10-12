@@ -1,3 +1,15 @@
+import os
+import sys
+
+def res_path(relative_path):
+  """Get absolute path to resource, works for dev and for PyInstaller"""
+  try:
+    base_path = sys._MEIPASS
+  except Exception:
+    base_path = os.path.abspath(".")
+  return os.path.join(base_path, relative_path)
+
+
 SCREEN_DIMENSIONS = (1280, 720)
 FONT_SIZE = 16
 CHAR_WIDTH = FONT_SIZE // 2

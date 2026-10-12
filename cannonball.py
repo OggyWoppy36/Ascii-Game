@@ -1,7 +1,5 @@
 from math import cos, radians, sin
-
 from ascii_grid import AsciiGrid
-import pygame
 
 
 def calculate_displacement(dir, power):
