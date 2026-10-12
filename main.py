@@ -27,10 +27,11 @@ def render(grid):
     for y in range(grid.height):
         for x in range(grid.width):
             char, col_idx = grid.get(x, y)
-            if char != '\x00' and char != ' ':
+            if char != '\x00' and char != ' ' and char != 't':
                 color = COLOR_PALETTE[col_idx % len(COLOR_PALETTE)]
                 text_surface = font.render(char, True, color)
                 screen.blit(text_surface, (x * char_w, y * FONT_SIZE))
+            
 
 
 

@@ -1,60 +1,89 @@
 from ascii_grid import AsciiGrid
 import pygame
-from enum import Enum, unique
 from load_ascii import load_ascii
-import array
 
-@unique
-class Facing(Enum):
-    UP = 0
-    LEFT = 1
-    RIGHT = 2
-    DOWN = 3
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
 
 
 
-SHIP_STRINGS = [None]*4
-SHIP_STRINGS[0] = load_ascii("AsciiArt/Ship/up")
-SHIP_STRINGS[1] = load_ascii("AsciiArt/Ship/left")
-SHIP_STRINGS[2] = load_ascii("AsciiArt/Ship/right")
-SHIP_STRINGS[3] = load_ascii("AsciiArt/Ship/down")
+STRINGS = [None]*4
+SIZES = [(0,0)]*4
+CENTERS = [(0,0)]*4
+
+STRINGS[UP], width, height = load_ascii("AsciiArt/Ship/up")
+SIZES[UP] = (width, height)
+CENTERS[UP] = (2,3)
+
+STRINGS[RIGHT], width, height = load_ascii("AsciiArt/Ship/right")
+SIZES[RIGHT] = (width, height)
+CENTERS[RIGHT] = (5,1)
+
+STRINGS[DOWN], width, height = load_ascii("AsciiArt/Ship/down")
+SIZES[DOWN] = (width, height)
+CENTERS[DOWN] = (2,2)
+
+STRINGS[LEFT], width, height = load_ascii("AsciiArt/Ship/left")
+SIZES[LEFT] = (width, height)
+CENTERS[LEFT] = (6,1)
+
+
+
+def get_vector(dir,reverse=1):
+    if dir == UP:
+        return (0,-reverse)
+    elif dir == LEFT:
+        return (-reverse, 0)
+    elif dir == DOWN:
+        return (0,reverse)
+    elif dir == RIGHT:
+        return (reverse,0)
+
 
 
 class Ship:
-    def __init__(self, x, y,):
+    def __init__(self, x, y, player=1):
         self.x = x
         self.y = y
-        self.texture = AsciiGrid(SHIP_STRINGS[0][1],SHIP_STRINGS[0][2], self.x, self.y)
-        self.texture.set_texture(SHIP_STRINGS[0][0],8)
-        self.facing = Facing.RIGHT
+        self.player = player
+
+        self.textures = [None]*4
+        for i in range(4):
+            print(i)
+            self.textures[i] = AsciiGrid(SIZES[i][0], SIZES[i][1], self.x, self.y)
+            self.textures[i].set_texture(STRINGS[i],8)
+
+        
+        self.dir = RIGHT
 
     def display(self, grid: AsciiGrid):
-        # if self.facing == Facing.LEFT:
-        #     self.texture.set(5,0,"(",1)
-        #     self.texture.set(6,0,"|",8)
-        # elif self.facing == Facing.RIGHT:
-        #     self.texture.set(5,0,"|",8)
-        #     self.texture.set(6,0,")",1)
-        grid.blit(self.texture,self.x,self.y)
+        cent_x = self.x - CENTERS[self.dir][0]
+        cent_y = self.y - CENTERS[self.dir][1]
+        grid.blit(self.textures[self.dir],cent_x, cent_y)
 
-    def move(self, xoff, yoff):
-        self.x += xoff
-        self.y += yoff
-        self.texture.move(xoff,yoff)
+    def move(self, vec):
+        self.x += vec[0]*2
+        self.y += vec[1]
+        for text in self.textures:
+            text.move(vec[0],vec[1])
+
+    def rotate(self, dir):
+        self.dir = (self.dir + dir) % 4
 
     def update(self):
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_just_pressed()
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.move(-1,0)
-            self.facing = Facing.LEFT
+            self.rotate(-1)
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.move(1,0)
-            self.facing = Facing.RIGHT
-        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.move(0,1)
-            self.facing = Facing.DOWN
+            self.rotate(1)
+            
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.move(get_vector(self.dir,-1))
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.move(0,-1)
-            self.facing = Facing.UP
+            self.move(get_vector(self.dir))
     

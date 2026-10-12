@@ -1,6 +1,6 @@
 import array
 #from ascii_object import AsciiObject
-from settings import COLOR_BITS as SHIFT
+from settings import COLOR_BITS as SHIFT, BITMASK as MASK
 
 #just the grid, no font stuff
 class AsciiGrid:
@@ -9,7 +9,7 @@ class AsciiGrid:
         self.height = height
         self.x = x
         self.y = y
-        self.grid = array.array('H', [0] * (width * height))
+        self.grid = array.array('I', [0] * (width * height))
 
     def get_idx(self, x, y) -> int:
         if not self.is_in_bounds(x,y):
@@ -19,11 +19,17 @@ class AsciiGrid:
     def set(self, x, y, char, col):
         idx = self.get_idx(x,y)
         char_int = ord(char)
-        self.grid[idx] = (char_int << SHIFT) | (col & 0x3F)
+        self.grid[idx] = (char_int << SHIFT) | (col & MASK)
+
+    def set_col(self, x, y, col):
+        idx = self.get_idx(x,y)
+        packed = self.grid[idx]
+        char_int = packed >> SHIFT
+        self.grid[idx] = (char_int << SHIFT) | (col & MASK)
 
     def set_idx(self, idx, char, col):
         char_int = ord(char)
-        self.grid[idx] = (char_int << SHIFT) | (col & 0x3F)
+        self.grid[idx] = (char_int << SHIFT) | (col & MASK)
 
     def set_packed(self, x, y, packed):
         idx = self.get_idx(x, y)
@@ -33,7 +39,7 @@ class AsciiGrid:
         idx = self.get_idx(x, y)
         packed = self.grid[idx]
         char = chr(packed >> SHIFT)
-        col = packed & 0x3F
+        col = packed & MASK
         return char, col
 
     def get_packed(self, x, y):
