@@ -6,7 +6,7 @@ from ship import Ship
 pygame.display.init()
 pygame.font.init()
 screen = pygame.display.set_mode(SCREEN_DIMS)
-font = pygame.Font(res_path("CONSOLA.TTF"), FONT_SIZE)
+font = pygame.Font(res_path("res/CONSOLA.TTF"), FONT_SIZE)
 pygame.display.set_caption("Ascii Renderer")
 clock = pygame.time.Clock()
 

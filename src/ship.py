@@ -2,6 +2,7 @@ from ascii_grid import AsciiGrid
 import pygame
 from load_ascii import load_ascii
 from settings import res_path
+from aimer import Aimer
 
 UP = 0
 RIGHT = 1
@@ -14,19 +15,19 @@ STRINGS = [None]*4
 SIZES = [(0,0)]*4
 CENTERS = [(0,0)]*4
 
-STRINGS[UP], width, height = load_ascii(res_path("AsciiArt/Ship/up"))
+STRINGS[UP], width, height = load_ascii(res_path("res/AsciiArt/Ship/up"))
 SIZES[UP] = (width, height)
 CENTERS[UP] = (2,3)
 
-STRINGS[RIGHT], width, height = load_ascii(res_path("AsciiArt/Ship/right"))
+STRINGS[RIGHT], width, height = load_ascii(res_path("res/AsciiArt/Ship/right"))
 SIZES[RIGHT] = (width, height)
 CENTERS[RIGHT] = (5,1)
 
-STRINGS[DOWN], width, height = load_ascii(res_path("AsciiArt/Ship/down"))
+STRINGS[DOWN], width, height = load_ascii(res_path("res/AsciiArt/Ship/down"))
 SIZES[DOWN] = (width, height)
 CENTERS[DOWN] = (2,2)
 
-STRINGS[LEFT], width, height = load_ascii(res_path("AsciiArt/Ship/left"))
+STRINGS[LEFT], width, height = load_ascii(res_path("res/AsciiArt/Ship/left"))
 SIZES[LEFT] = (width, height)
 CENTERS[LEFT] = (6,1)
 
@@ -52,17 +53,23 @@ class Ship:
 
         self.textures = [None]*4
         for i in range(4):
-            print(i)
+            
             self.textures[i] = AsciiGrid(SIZES[i][0], SIZES[i][1], self.x, self.y)
             self.textures[i].set_texture(STRINGS[i],8)
 
         
         self.dir = RIGHT
+        #cent = self.get_current_center_pos()
+        self.aimer = Aimer(self.x,self.y)
+
+    # def get_current_center_pos(self):
+    #     return (CENTERS[self.dir][0] + self.x, CENTERS[self.dir][1] + self.y)
 
     def display(self, grid: AsciiGrid):
         cent_x = self.x - CENTERS[self.dir][0]
         cent_y = self.y - CENTERS[self.dir][1]
         grid.blit(self.textures[self.dir],cent_x, cent_y)
+        self.aimer.display(grid)
 
     def move(self, vec):
         self.x += vec[0]*2
@@ -87,4 +94,9 @@ class Ship:
             self.move(get_vector(self.dir,-1))
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
             self.move(get_vector(self.dir))
+
+        #cent = self.get_current_center_pos()
+        self.aimer = Aimer(self.x,self.y)
+        mouse = pygame.mouse.get_pos()
+        self.aimer.update_pts(mouse[0],mouse[1])
     

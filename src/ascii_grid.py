@@ -73,5 +73,9 @@ class AsciiGrid:
         self.x += xoff
         self.y += yoff
 
+    def move_to(self, xpos, ypos):
+        self.x = xpos
+        self.y = ypos
+
     
 
