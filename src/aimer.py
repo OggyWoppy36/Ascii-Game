@@ -26,10 +26,27 @@ class Aimer:
         tarx,tary = calc_grid_pt(mouseX,mouseY)
         self.target.move_to(tarx, tary)
         lerp_perc = 0.25
-        for pt in self.points:
+        dist_sq = (tarx-self.x)**2 + (tary-self.y)**2
+        for idx,pt in enumerate(self.points):
             x,y = lerp_grid_pt(self.x,self.y,tarx,tary,lerp_perc)
             pt.move_to(x,y)
+            off = self.calc_y_offset(dist_sq,idx)
+            pt.move(0,off)
+            print(pt.y)
             lerp_perc += 0.25
+
+    def calc_y_offset(self, d_sq, idx):
+        # MAX_D_SQ = 20000
+        # MAX_OFFSET = 20
+        # off = d_sq * (MAX_OFFSET / MAX_D_SQ)
+        # if (idx != 1):
+        #     off *= 0.6
+        # return -round(off)
+        if (idx == 1):
+            return -10
+        else:
+            return -7
+    
 
     def display(self, grid: AsciiGrid):
         grid.blit(self.target)
