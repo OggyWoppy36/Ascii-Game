@@ -53,7 +53,7 @@ while running:
     
     
     render(screen_grid)
-    pygame.draw.aaline(screen,"red",(ship.aimer.screen_pos[0],ship.aimer.screen_pos[1]),(ship.aimer.screen_pos[0]+ship.aimer.init_vel_vec.x,ship.aimer.screen_pos[1]+ship.aimer.init_vel_vec.y),3)
+    #pygame.draw.aaline(screen,"red",(ship.aimer.screen_pos[0],ship.aimer.screen_pos[1]),(ship.aimer.screen_pos[0]+ship.aimer.init_vel_vec.x,ship.aimer.screen_pos[1]+ship.aimer.init_vel_vec.y),3)
     pygame.display.flip()
     clock.tick(FRAMERATE)
 
