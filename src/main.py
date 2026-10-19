@@ -1,7 +1,9 @@
 import pygame
 from ascii_grid import AsciiGrid
-from settings import res_path,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
+from settings import res_path,FRAMERATE,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
 from ship import Ship
+from mouse_tracker import MouseTracker
+import random
 
 pygame.display.init()
 pygame.font.init()
@@ -11,15 +13,15 @@ pygame.display.set_caption("Ascii Renderer")
 clock = pygame.time.Clock()
 
 screen_grid = AsciiGrid(GRID_DIMS[0], GRID_DIMS[1])
-obj = AsciiGrid(screen_grid.width, screen_grid.height, 0, 0)
-obj.set_texture("~"*(obj.width*obj.height),6)
-#obj.set_texture("".join(random.choices("SRHGB",k=(obj.width*obj.height))),6)
+sea = AsciiGrid(screen_grid.width, screen_grid.height-25, 0, 25)
+sea.set_texture("~"*(sea.width*sea.height),6)
+sea.set_texture("".join(random.choices("SRHGB",k=(sea.width*sea.height))),6)
+for x in range(sea.width):
+    sea.set(x,0,"S",6)
 
-sky = AsciiGrid(screen_grid.width, 10, 0, 0)
+sky = AsciiGrid(screen_grid.width, 25, 0, 0)
 sky.set_texture("@" * sky.width*sky.height, 7)
-ship = Ship(30,8)
-
-
+ship = Ship(30,20)
 
 
 def render(grid):
@@ -41,18 +43,18 @@ while running:
             running = False
         
             
-
-    screen.fill((0,0,0))
+    screen.fill(0)
     char_w = FONT_SIZE // 2
     
-    screen_grid.blit(obj)
-    #screen_grid.blit(sky)
+    screen_grid.blit(sea)
+    screen_grid.blit(sky)
     ship.display(screen_grid)
     ship.update()
     
-    render(screen_grid)
     
+    render(screen_grid)
+    pygame.draw.aaline(screen,"red",(ship.aimer.screen_pos[0],ship.aimer.screen_pos[1]),(ship.aimer.screen_pos[0]+ship.aimer.init_vel_vec.x,ship.aimer.screen_pos[1]+ship.aimer.init_vel_vec.y),3)
     pygame.display.flip()
-    clock.tick(20)
+    clock.tick(FRAMERATE)
 
 pygame.quit()
