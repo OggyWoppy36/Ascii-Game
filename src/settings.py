@@ -14,7 +14,13 @@ SCREEN_DIMENSIONS = (1280, 720)
 FONT_SIZE = 16
 CHAR_WIDTH = FONT_SIZE // 2
 GRID_DIMENSIONS = (SCREEN_DIMENSIONS[0] // CHAR_WIDTH, SCREEN_DIMENSIONS[1] // FONT_SIZE) #idk prob wrong
+FRAMERATE = 20
 
+def screen_to_grid(x,y):
+  return int(round(x/CHAR_WIDTH)), int(round(y/FONT_SIZE))
+
+def grid_to_screen(x,y,center=True):
+  return x*CHAR_WIDTH + CHAR_WIDTH*0.5, y*FONT_SIZE + FONT_SIZE*0.5
 
 COLOR_PALETTE = [
     (0, 0, 0),       # 0: Black
@@ -31,3 +37,11 @@ COLOR_PALETTE = [
 
 COLOR_BITS = 5 # COLS = 2^COLOR_BITS = 32
 BITMASK = (2**COLOR_BITS) - 1
+
+
+GRAVITY = 2
+MAX_VEL = 50
+
+from mouse_tracker import MouseTracker
+
+MOUSE = MouseTracker()
