@@ -1,0 +1,38 @@
+name: Build and Deploy Pygame Web Engine
+
+on:
+  push:
+    branches:
+      - web-build  # Triggers the automated build every time you push to this branch
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-level: '3.12'
+
+      - name: Install Pygbag Compiler
+        run: |
+          python -m pip install --upgrade pip
+          pip install pygbag
+
+      - name: Compile Pygame to WebAssembly
+        run: |
+          # Compiles your src/ folder and generates the web files
+          python -m pygbag --build src/
+
+      - name: Deploy Compiled Files to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # It isolates and pushes ONLY the web assets to this branch
+          folder: src/build/web  # The directory where pygbag dumps the index.html
