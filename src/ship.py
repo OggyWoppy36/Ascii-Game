@@ -11,11 +11,11 @@ LEFT = 1
 STRINGS = [None]*2
 CANNON_OFFSET = [(0,0)]*2
 
-STRINGS[RIGHT], width, height = load_ascii(res_path("res/AsciiArt/Ship/side-right"))
+STRINGS[RIGHT], width, height = load_ascii(res_path("res/AsciiArt/Ship/side-right.txt"))
 SIZE = (width, height)
 CANNON_OFFSET[RIGHT] = (11,2)
 
-STRINGS[LEFT],_,_ = load_ascii(res_path("res/AsciiArt/Ship/side-left"))
+STRINGS[LEFT],_,_ = load_ascii(res_path("res/AsciiArt/Ship/side-left.txt"))
 CANNON_OFFSET[LEFT] = (0,2)
 
 

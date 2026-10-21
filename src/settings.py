@@ -1,14 +1,39 @@
 import os
 import sys
+from pygame import font
+from pathlib import Path
 
 def res_path(relative_path):
-  """Get absolute path to resource, works for dev and for PyInstaller"""
-  try:
-    base_path = sys._MEIPASS
-  except Exception:
-    base_path = os.path.abspath(".")
-  return os.path.join(base_path, relative_path)
+  # If running on the web browser
+    if sys.platform == "emscripten":
+        # Since main.py is in src/, go up one level to find the res/ folder
+        return os.path.join("..", relative_path).replace("\\", "/")
 
+    # If running as a desktop .exe release
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        # Standard local development
+        base_path = os.path.abspath(".")
+        
+    return os.path.join(base_path, relative_path)
+
+
+def load_font(rel_path):
+  font_file_str = res_path(rel_path)
+  font_obj = None
+  try:
+    # Convert it to a formal Path object so the WASM system tracks it natively
+    font_path = Path(font_file_str)
+
+    # Try loading the font
+    font_obj = font.Font(font_path, 20)
+  except FileNotFoundError:
+    print(f"Web Font loading failed for {font_file_str}, falling back to system font.")
+    # Fallback so your game never crashes to a black screen
+    font_obj = font.SysFont("courier", 20)
+
+  return font_obj
 
 SCREEN_DIMENSIONS = (1280, 720)
 FONT_SIZE = 16

@@ -1,14 +1,14 @@
 import pygame
 from ascii_grid import AsciiGrid
-from settings import res_path,FRAMERATE,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
+from settings import res_path,load_font,FRAMERATE,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, CHAR_WIDTH, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
 from ship import Ship
-from mouse_tracker import MouseTracker
 import random
+import asyncio
 
 pygame.display.init()
 pygame.font.init()
 screen = pygame.display.set_mode(SCREEN_DIMS)
-font = pygame.Font(res_path("res/CONSOLA.TTF"), FONT_SIZE)
+font = load_font("res/CONSOLA.TTF")#pygame.Font(res_path("res/CONSOLA.TTF"), FONT_SIZE)
 pygame.display.set_caption("Ascii Renderer")
 clock = pygame.time.Clock()
 
@@ -31,30 +31,34 @@ def render(grid):
             if char != '\x00' and char != ' ' and char != 't':
                 color = COLOR_PALETTE[col_idx % len(COLOR_PALETTE)]
                 text_surface = font.render(char, True, color)
-                screen.blit(text_surface, (x * char_w, y * FONT_SIZE))
+                screen.blit(text_surface, (x * CHAR_WIDTH, y * FONT_SIZE))
             
 
 
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+async def main():
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+                
+        screen.fill(0)
+        char_w = FONT_SIZE // 2
         
-            
-    screen.fill(0)
-    char_w = FONT_SIZE // 2
-    
-    screen_grid.blit(sea)
-    screen_grid.blit(sky)
-    ship.display(screen_grid)
-    ship.update()
-    
-    
-    render(screen_grid)
-    #pygame.draw.aaline(screen,"red",(ship.aimer.screen_pos[0],ship.aimer.screen_pos[1]),(ship.aimer.screen_pos[0]+ship.aimer.init_vel_vec.x,ship.aimer.screen_pos[1]+ship.aimer.init_vel_vec.y),3)
-    pygame.display.flip()
-    clock.tick(FRAMERATE)
+        screen_grid.blit(sea)
+        screen_grid.blit(sky)
+        ship.display(screen_grid)
+        ship.update()
+        
+        
+        render(screen_grid)
+        #pygame.draw.aaline(screen,"red",(ship.aimer.screen_pos[0],ship.aimer.screen_pos[1]),(ship.aimer.screen_pos[0]+ship.aimer.init_vel_vec.x,ship.aimer.screen_pos[1]+ship.aimer.init_vel_vec.y),3)
+        pygame.display.flip()
+        clock.tick(FRAMERATE)
+        await asyncio.sleep(0)
 
-pygame.quit()
+    pygame.quit()
+
+
+asyncio.run(main())
