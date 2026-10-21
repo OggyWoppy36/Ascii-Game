@@ -1,8 +1,7 @@
 import pygame
 from ascii_grid import AsciiGrid
-from settings import res_path,FRAMERATE,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
+from settings import res_path,FRAMERATE,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, CHAR_WIDTH, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE, MOUSE as mouse
 from ship import Ship
-from mouse_tracker import MouseTracker
 import random
 
 pygame.display.init()
@@ -31,7 +30,7 @@ def render(grid):
             if char != '\x00' and char != ' ' and char != 't':
                 color = COLOR_PALETTE[col_idx % len(COLOR_PALETTE)]
                 text_surface = font.render(char, True, color)
-                screen.blit(text_surface, (x * char_w, y * FONT_SIZE))
+                screen.blit(text_surface, (x * CHAR_WIDTH, y * FONT_SIZE))
             
 
 
@@ -41,10 +40,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        
-            
+    mouse.update()    
+    
     screen.fill(0)
-    char_w = FONT_SIZE // 2
     
     screen_grid.blit(sea)
     screen_grid.blit(sky)

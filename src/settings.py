@@ -1,4 +1,4 @@
-import os
+import os.path as path
 import sys
 
 def res_path(relative_path):
@@ -6,8 +6,8 @@ def res_path(relative_path):
   try:
     base_path = sys._MEIPASS
   except Exception:
-    base_path = os.path.abspath(".")
-  return os.path.join(base_path, relative_path)
+    base_path = path.abspath(".")
+  return path.join(base_path, relative_path)
 
 
 SCREEN_DIMENSIONS = (1280, 720)

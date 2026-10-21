@@ -2,8 +2,7 @@ from math import floor
 from ascii_grid import AsciiGrid
 from settings import FONT_SIZE as CHAR_H, CHAR_WIDTH as CHAR_W, GRAVITY as G, MAX_VEL, screen_to_grid, grid_to_screen
 from settings import MOUSE as mouse
-import pygame
-import pygame.math as m
+from pygame import math as m
 
 def calc_grid_pt(screenx, screeny):
     x = floor(screenx / CHAR_W)

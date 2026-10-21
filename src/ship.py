@@ -1,5 +1,6 @@
 from ascii_grid import AsciiGrid
-import pygame
+from pygame.key import get_pressed as get_pressed_keys
+from pygame import K_LEFT, K_RIGHT, K_a, K_d
 from load_ascii import load_ascii
 from settings import grid_to_screen, res_path, MOUSE as mouse
 from aimer import Aimer
@@ -79,12 +80,12 @@ class Ship:
 
 
     def update(self):
-        keys = pygame.key.get_pressed()
+        keys = get_pressed_keys()
 
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        if keys[K_LEFT] or keys[K_a]:
             #self.dir = LEFT
             self.move((-1,0))
-        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        elif keys[K_RIGHT] or keys[K_d]:
             #self.dir = RIGHT
             self.move((1,0))
             

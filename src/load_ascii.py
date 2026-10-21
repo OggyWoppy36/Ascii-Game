@@ -1,7 +1,7 @@
-import os
+from os import path as ospath
 
 def load_ascii(path):
-    if not os.path.exists(path):
+    if not ospath.exists(path):
         print(f"File not found at '{path}'.")
         return None, 0, 0
 

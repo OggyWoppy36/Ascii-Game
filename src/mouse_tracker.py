@@ -1,6 +1,6 @@
 from settings import FRAMERATE
 
-import pygame
+from pygame import mouse
 
 class MouseTracker:
     def __init__(self):
@@ -13,7 +13,6 @@ class MouseTracker:
         
 
     def update(self):
-        mouse = pygame.mouse
 
         self.timer = max(0,self.timer-1)
         self.double_clicked = False
