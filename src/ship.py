@@ -95,7 +95,7 @@ class Ship:
         if (self.cannonball is not None and self.cannonball.should_remove()):
             self.cannonball = None
 
-        if (mouse.double_clicked and self.cannonball is None):
+        if ((mouse.double_clicked or keys[pygame.K_SPACE]) and self.cannonball is None):
             self.shoot_cannonball()
 
         if (self.cannonball is not None):

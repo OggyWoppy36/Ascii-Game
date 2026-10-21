@@ -50,7 +50,7 @@ class Aimer:
 
     def update(self, force_update = False):
         self.screen_pos = grid_to_screen(self.x, self.y)
-        mouse.update()
+        
         if (mouse.is_dragging() or force_update):
             self.update_pts()
         #if (mouse.double_clicked):

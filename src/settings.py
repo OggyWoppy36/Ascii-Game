@@ -5,15 +5,20 @@ from pathlib import Path
 
 def res_path(relative_path):
   # If running on the web browser
+    # If running on the web browser (Pygbag)
     if sys.platform == "emscripten":
-        # Since main.py is in src/, go up one level to find the res/ folder
-        return os.path.join("..", relative_path).replace("\\", "/")
+        # Because res/ is inside src/, its path on the web is just "res/..."
+        # Replace backslashes and strip out any accidental leading '../'
+        clean_path = relative_path.replace("\\", "/")
+        if clean_path.startswith("../"):
+            clean_path = clean_path[3:]
+        return clean_path
 
-    # If running as a desktop .exe release
+    # If running as a desktop .exe release (PyInstaller)
     try:
         base_path = sys._MEIPASS
     except Exception:
-        # Standard local development
+        # Standard local desktop development
         base_path = os.path.abspath(".")
         
     return os.path.join(base_path, relative_path)
@@ -21,7 +26,7 @@ def res_path(relative_path):
 
 def load_font(rel_path):
   font_file_str = res_path(rel_path)
-  font_obj = None
+  #font_obj = None
   try:
     # Convert it to a formal Path object so the WASM system tracks it natively
     font_path = Path(font_file_str)

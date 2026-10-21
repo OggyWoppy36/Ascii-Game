@@ -1,6 +1,7 @@
 import pygame
 from ascii_grid import AsciiGrid
 from settings import res_path,load_font,FRAMERATE,SCREEN_DIMENSIONS as SCREEN_DIMS, FONT_SIZE, CHAR_WIDTH, GRID_DIMENSIONS as GRID_DIMS, COLOR_PALETTE
+from settings import MOUSE as mouse
 from ship import Ship
 import random
 import asyncio
@@ -42,7 +43,7 @@ async def main():
             if event.type == pygame.QUIT:
                 running = False
             
-                
+        mouse.update()
         screen.fill(0)
         char_w = FONT_SIZE // 2
         
