@@ -47,9 +47,6 @@ class Ship:
         self.dir = RIGHT
         self.aimer = Aimer(self.get_cannon_pos())
 
-    # def get_current_center_pos(self):
-    #     return (CENTERS[self.dir][0] + self.x, CENTERS[self.dir][1] + self.y)
-
     def get_cannon_pos(self):
         return self.x+CANNON_OFFSET[self.dir][0],self.y+CANNON_OFFSET[self.dir][1]
 
@@ -68,11 +65,9 @@ class Ship:
         for text in self.textures:
             text.move(vec[0],vec[1])
         self.aimer.set_pos(self.get_cannon_pos())
-        self.aimer.update(True)
+        self.aimer.update(force_update=True)
         
-
-    # def rotate(self, dir):
-    #     self.dir = (self.dir + dir) % 4
+        
     def shoot_cannonball(self):
         x,y = self.get_cannon_pos()
         screenx, screeny = grid_to_screen(x,y)
@@ -96,8 +91,10 @@ class Ship:
         if (self.cannonball is not None and self.cannonball.should_remove()):
             self.cannonball = None
 
-        if (mouse.double_clicked and self.cannonball is None):
+        
+        if (mouse.double_clicked and self.cannonball is None and self.aimer.init_vel_mag_sq() >= 0.005):
             self.shoot_cannonball()
+            self.aimer.reset()
 
         if (self.cannonball is not None):
             self.cannonball.update()

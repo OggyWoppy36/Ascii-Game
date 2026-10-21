@@ -22,11 +22,17 @@ class Cannonball:
         self.pos = screen_to_grid(self.screen_pos.x, self.screen_pos.y)
 
     def display(self, grid: AsciiGrid):
-        print(self.pos[0],self.pos[1])
+        # print("cannon",self.pos[0],self.pos[1])
         grid.blit(self.texture,self.pos[0],self.pos[1])
 
-    def off_screen(self):
-        return self.pos[0] < 0 or self.pos[1] < 0 or self.pos[0] >= DIMS[0] or self.pos[1] >= DIMS[1]
+    def off_screen_x(self):
+        return self.pos[0] < 0  or self.pos[0] >= DIMS[0]
+
+    def above_screen(self):
+        return self.pos[1] < 0
+
+    def below_screen(self):
+        return self.pos[1] >= DIMS[1]
 
     def should_remove(self):
-        return self.exploded or self.off_screen()
+        return self.exploded or self.off_screen_x() or self.below_screen()
