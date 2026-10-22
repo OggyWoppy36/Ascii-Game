@@ -5,8 +5,11 @@ A game rendered fully in ASCII about sinking your enemy's ship first built using
 ## Controls:
 - Left/Right Arrow Keys or A/D: Move left and right
 - Left-Click and Drag: Move around aiming reticle
-- Double Left-Click: Shoot cannonball
+- Double Left-Click: Shoot cannonball (Space key on web build)
 
+
+## How to Play (Web)
+Go to the [website](https://oggywoppy36.github.io/Ascii-Game/) and play without any prerequisites
 
 ## How to Play (Release - Windows Only)
 1. Go to the [Releases](https://github.com/OggyWoppy36/Ascii-Game/releases) section. 
